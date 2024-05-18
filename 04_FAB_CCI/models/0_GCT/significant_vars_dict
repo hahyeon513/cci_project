@@ -1,0 +1,44 @@
+{
+    "tar1": [
+        "var1",
+        "var10",
+        "var137",
+        "var17",
+        "var8"
+    ],
+    "tar2": [
+        "var137",
+        "var95",
+        "var1",
+        "var10",
+        "var17"
+    ],
+    "tar3": [
+        "var1",
+        "var10",
+        "var65",
+        "var8",
+        "var17"
+    ],
+    "tar4": [
+        "var8",
+        "var17",
+        "var1",
+        "var10",
+        "var11"
+    ],
+    "tar5": [
+        "var15",
+        "var6",
+        "var13",
+        "var4",
+        "var66"
+    ],
+    "tar6": [
+        "var15",
+        "var6",
+        "var4",
+        "var13",
+        "var66"
+    ]
+}

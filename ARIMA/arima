@@ -1,0 +1,56 @@
+#%%
+import numpy as np
+import pandas as pd
+from statsmodels.tsa.arima.model import ARIMA
+from sklearn.metrics import mean_absolute_error, mean_squared_error
+import matplotlib.pyplot as plt
+import seaborn as sns
+from math import sqrt
+import pmdarima as pm
+
+# Set target code for analysis
+'''
+1 : 골조
+2 : 건축마감
+3 : 설비마감
+4 : 전기마감
+5 : 통합
+'''
+target_num = '5'
+target_code = 'tar' + target_num
+
+# Set model parameters
+model_params = {'ADF_signif': 0.05,
+                'test_month': 3}
+
+# Load dataset
+df_tar = pd.read_csv('./dataset/dataset_target.csv', index_col='date', parse_dates=True)
+df_tar = df_tar[[target_code]]
+df_tar = df_tar.asfreq('MS')
+
+# Conduct ADF Test to check stationarity
+def check_stationarity(timeseries, signif=model_params['ADF_signif']):
+    from statsmodels.tsa.stattools import adfuller
+    adf_test_result = adfuller(timeseries, autolag='AIC')
+    return adf_test_result[1] <= signif
+
+# Make the series stationary if needed
+if not check_stationarity(df_tar):
+    print(f'data diffed')
+    df_tar_staionarized = df_tar.diff().bfill()
+
+# Split the dataset into train/test dataset
+test_month = model_params['test_month']
+train_data = df_tar_staionarized.iloc[:-test_month,:]
+test_data = df_tar_staionarized.iloc[-test_month:,:]
+
+# Optimize the parameters(p,d,q) for the model with auto-arima
+'''
+returns (p,d,q)
+p = 
+d = 
+q = 
+'''
+model_auto = pm.auto_arima(train_data, seasonal=False, stepwise=True, trace=True, error_action='ignore', suppress_warnings=True)
+best_order = model_auto.order
+print(f"Best ARIMA Order: {best_order}")
